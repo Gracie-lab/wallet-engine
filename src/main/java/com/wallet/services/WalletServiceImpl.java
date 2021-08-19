@@ -36,7 +36,7 @@ public class WalletServiceImpl implements WalletService{
 
         Wallet newWallet = new Wallet();
         newWallet.setOwnersPhoneNumber(request.getPhoneNumber());
-        newWallet.setWalletId(walletcode + RandomString.make(10).toUpperCase());
+        newWallet.setWalletId(walletcode + RandomString.make(5).toUpperCase());
         return walletRepository.save(newWallet);
     }
 
@@ -64,7 +64,7 @@ public class WalletServiceImpl implements WalletService{
     @Override
     public GeneralResponse creditWallet(CreditWalletRequest request) throws WalletException {
         var wallet = walletRepository.findByWalletId(request.getWalletId());
-        if(wallet.isEmpty()) throw new WalletException("No wallet with give id");
+        if(wallet.isEmpty()) throw new WalletException("No wallet with given id");
         if(!wallet.get().is_active()) return new GeneralResponse("This wallet is not active");
         var newBalance = wallet.get().getBalance()+request.getAmount();
         wallet.get().setBalance(newBalance);
@@ -76,7 +76,7 @@ public class WalletServiceImpl implements WalletService{
     @Override
     public GeneralResponse debitWallet(DebitWalletRequest request) throws WalletException {
         var wallet = walletRepository.findByWalletId(request.getWalletId());
-        if(wallet.isEmpty()) throw new WalletException("No wallet with give id");
+        if(wallet.isEmpty()) throw new WalletException("No wallet with given id");
         if(!wallet.get().is_active()) return new GeneralResponse("This wallet is not active");
         var walletBalance = wallet.get().getBalance();
         if(walletBalance < request.getAmount()) return  new GeneralResponse("Insufficient balance");
