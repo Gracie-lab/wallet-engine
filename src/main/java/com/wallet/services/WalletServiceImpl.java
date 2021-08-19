@@ -12,6 +12,8 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 
 @Service
 @Slf4j
@@ -54,6 +56,7 @@ public class WalletServiceImpl implements WalletService{
         if(wallet.isEmpty()) throw new WalletException("No wallet with give id");
         if(!wallet.get().is_active()) return new GeneralResponse("Wallet has already been deactivated");
         wallet.get().set_active(false);
+        wallet.get().setDateDeactivated(LocalDateTime.now());
         walletRepository.save(wallet.get());
         return new GeneralResponse("Wallet is been deactivated successfully");
     }
@@ -89,6 +92,7 @@ public class WalletServiceImpl implements WalletService{
         transaction.setTransactionType(transactionType.name());
         transaction.setWalletId(walletId);
         transaction.setAmount(amount);
+        transaction.setDate(LocalDateTime.now());
         transactionRepository.save(transaction);
     }
 }
