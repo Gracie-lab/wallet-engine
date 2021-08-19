@@ -5,3 +5,6 @@ your wallet.
 A person (identified by phone number) can only have one wallet.
 
 Database used - postgres
+
+Find API documentation here
+http://localhost:8080/swagger-ui/#/wallet-controller
